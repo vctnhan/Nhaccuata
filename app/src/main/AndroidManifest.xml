@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.hanwool.saleapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo"
+        android:label="Hanwool mp3"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".AddImageRegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:label="Home Page"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".YourProfileActivity"
+            android:label="Your profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ForgotpasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Navigate_AccountActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AllOfflineMusicActivity"
+            android:label="Offline songs"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".PlayerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FavouriteMusicActivity"
+            android:label="Favourite Songs"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".speech_to_text">
+
+        </activity>
+    </application>
+
+</manifest>

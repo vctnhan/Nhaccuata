@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1067295708375",
+    "firebase_url": "https://saleapp-35f9e.firebaseio.com",
+    "project_id": "saleapp-35f9e",
+    "storage_bucket": "saleapp-35f9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067295708375:android:650742f604cff476",
+        "android_client_info": {
+          "package_name": "com.example.hanwool.saleapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067295708375-edvph4qjl56dc38m7k3v996cauags5sp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hanwool.saleapp",
+            "certificate_hash": "0871146688211422234f8d725b4c79061111fc26"
+          }
+        },
+        {
+          "client_id": "1067295708375-c02s35ml0ifbfvhu0a8nvs8p305drkc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2hGEUq0uYD4pRUrNaSuPTtK4vhN-mRfg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1067295708375-c02s35ml0ifbfvhu0a8nvs8p305drkc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

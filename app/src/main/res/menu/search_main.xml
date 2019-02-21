@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SearchResultsActivity"
+    >
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        android:iconifiedByDefault="true"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="Search"/>
+    <!--<item-->
+        <!--android:id="@+id/action_mic"-->
+        <!--android:icon="@drawable/micro"-->
+        <!--app:showAsAction="always"-->
+        <!--app:actionViewClass="android.support.v7.widget.SearchView"-->
+        <!--android:title="Search"/>-->
+
+</menu>

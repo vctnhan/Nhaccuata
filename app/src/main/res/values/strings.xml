@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">SaleApp</string>
+    <string name="skip"><u>Skip this step</u></string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_your_profile">YourProfileActivity</string>
+    <string name="reset_password"><u>Reset password</u></string>
+    <string name="title_activity_all_offline_music">AllOfflineMusicActivity</string>
+    <string name="title_activity_favourite_music">FavouriteMusicActivity</string>
+    <string name="speech_prompt">Say song or singer...</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+    <string name="tap_on_mic">Tap on mic to speak</string>
+</resources>
