@@ -1,5 +1,4 @@
-package com.example.hanwool.saleapp.fragment;
-
+package com.example.hanwool.saleapp;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -30,46 +29,41 @@ import com.example.hanwool.saleapp.adapter.SongAdapter;
 import com.example.hanwool.saleapp.modal.Song;
 import com.squareup.picasso.Picasso;
 
-public class Disc_Fragment extends Fragment {
+public class Disc_FragmentOnline extends Fragment {
     View view;
     public static de.hdodenhof.circleimageview.CircleImageView imgDisc;
-    public  static  RotateAnimation rotateAnimation;
+    public static RotateAnimation rotateAnimation;
     String songImage;
     RelativeLayout bgDiscFragment;
-    public  static ObjectAnimator objectAnimator;
+    public static ObjectAnimator objectAnimator;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            view = inflater.inflate(R.layout.fragment_disc, container, false);
-            imgDisc = view.findViewById(R.id.imgDisc);
-        bgDiscFragment= view.findViewById(R.id.bgDiscFragment);
+        view = inflater.inflate(R.layout.fragment_disc, container, false);
+        imgDisc = view.findViewById(R.id.imgDisc);
+        bgDiscFragment = view.findViewById(R.id.bgDiscFragment);
         Drawable background = bgDiscFragment.getBackground();
         background.setAlpha(80);
-            objectAnimator = ObjectAnimator.ofFloat(imgDisc, "rotation",0f,360f);
-            objectAnimator.setDuration(10000);
-            objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
-            objectAnimator.setRepeatMode(ValueAnimator.RESTART);
-            objectAnimator.setInterpolator(new LinearInterpolator());
+        objectAnimator = ObjectAnimator.ofFloat(imgDisc, "rotation", 0f, 360f);
+        objectAnimator.setDuration(10000);
+        objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        objectAnimator.setRepeatMode(ValueAnimator.RESTART);
+        objectAnimator.setInterpolator(new LinearInterpolator());
+        loadImage();
+        objectAnimator.start();
 
 
-            objectAnimator.start();
-
-
-//            imgDisc.setImageBitmap(PlayerActivity.songImage);
-
-//
-//         rotateAnimation = new RotateAnimation(0, 360f,
-//                Animation.RELATIVE_TO_SELF, 0.5f,
-//                Animation.RELATIVE_TO_SELF, 0.5f);
-//
-//        rotateAnimation.setInterpolator(new LinearInterpolator());
-//        rotateAnimation.setDuration(10000);
-//        rotateAnimation.setRepeatCount(Animation.INFINITE);
-//
-//       imgDisc.startAnimation(rotateAnimation);
-            return view;
+        return view;
     }
 
-
-
+    public void loadImage() {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.logo);
+        requestOptions.error(R.drawable.errorimg);
+        Glide.with(getActivity().getApplicationContext())
+                .setDefaultRequestOptions(requestOptions)
+                .load(PlayerOnlineActivity.arrayMp3.get(PlayerOnlineActivity.index).getImage())
+                .into(imgDisc);
+    }
 }

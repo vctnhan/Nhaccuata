@@ -61,7 +61,7 @@ import static com.example.hanwool.saleapp.PlayerActivity.mp;
 
 public class AllOfflineMusicActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
-    private static  final  int MY_PERMISSON_REQUEST =1;
+    private static final int MY_PERMISSON_REQUEST = 1;
     public static final int REQ_CODE_SPEECH_INPUT = 100;
     de.hdodenhof.circleimageview.CircleImageView imgAvatar;
     TextView txtDisplayname, txtEmail;
@@ -93,7 +93,7 @@ public class AllOfflineMusicActivity extends AppCompatActivity
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_PERMISSON_REQUEST);
             }
         } else {
-                Anhxa();
+            Anhxa();
 
         }
 
@@ -104,12 +104,12 @@ public class AllOfflineMusicActivity extends AppCompatActivity
 //
 //                finish();
 //                startActivity(getIntent());
-                if (  PlayerActivity.mp != null){
+                if (PlayerActivity.mp != null) {
                     PlayerActivity.mp.pause();
                 }
 
                 searchView.setIconified(false);
-                        promptSpeechInput();
+                promptSpeechInput();
 
 
             }
@@ -123,7 +123,7 @@ public class AllOfflineMusicActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        header= navigationView.getHeaderView(0);
+        header = navigationView.getHeaderView(0);
         imgAvatar = header.findViewById(R.id.imgAvarta);
         txtDisplayname = header.findViewById(R.id.txtDisplayname);
         txtEmail = header.findViewById(R.id.txtEmail);
@@ -133,7 +133,7 @@ public class AllOfflineMusicActivity extends AppCompatActivity
 
     private void Anhxa() {
         mAuth = FirebaseAuth.getInstance();
-        lvAllsongs= findViewById(R.id.lvAllOfflineSongs);
+        lvAllsongs = findViewById(R.id.lvAllOfflineSongs);
         arraySong = new ArrayList<>();
 
         songAdapter = new SongAdapter(AllOfflineMusicActivity.this, arraySong);
@@ -142,35 +142,34 @@ public class AllOfflineMusicActivity extends AppCompatActivity
         getMusic();
 
 
-
-
     }
-public void getMusic(){
+
+    public void getMusic() {
 //        arraySong = new ArrayList<>();
-    ContentResolver contentResolver = getContentResolver();
-    Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-    Uri songUri2 = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
-    String[] projection = {MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.AudioColumns.TITLE,
-            MediaStore.Audio.ArtistColumns.ARTIST,
-            MediaStore.Audio.AudioColumns.DATA};
-    Cursor songCursor = contentResolver.query(songUri, projection,null,null,null);
-    Cursor songCursor2 = contentResolver.query(songUri2, projection,null,null,null);
-    if (songCursor != null && songCursor.moveToFirst()){
-        int duration = songCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
-        int title = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
-        int artist = songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-        int location = songCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-        do {
-            String currentTitle = songCursor.getString(title);
-            String currentArtist = songCursor.getString(artist);
-            int currentDuration = songCursor.getInt(duration);
-             String  currentLocation = songCursor.getString(location);
-            arraySong.add(new Song(currentTitle, currentArtist, currentDuration, currentLocation));
-            songAdapter.notifyDataSetChanged();
-        } while (songCursor.moveToNext());
+        ContentResolver contentResolver = getContentResolver();
+        Uri songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Uri songUri2 = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
+        String[] projection = {MediaStore.Audio.Media.DURATION,
+                MediaStore.Audio.AudioColumns.TITLE,
+                MediaStore.Audio.ArtistColumns.ARTIST,
+                MediaStore.Audio.AudioColumns.DATA};
+        Cursor songCursor = contentResolver.query(songUri, projection, null, null, null);
+        Cursor songCursor2 = contentResolver.query(songUri2, projection, null, null, null);
+        if (songCursor != null && songCursor.moveToFirst()) {
+            int duration = songCursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
+            int title = songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int artist = songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+            int location = songCursor.getColumnIndex(MediaStore.Audio.Media.DATA);
+            do {
+                String currentTitle = songCursor.getString(title);
+                String currentArtist = songCursor.getString(artist);
+                int currentDuration = songCursor.getInt(duration);
+                String currentLocation = songCursor.getString(location);
+                arraySong.add(new Song(currentTitle, currentArtist, currentDuration, currentLocation));
+                songAdapter.notifyDataSetChanged();
+            } while (songCursor.moveToNext());
 
-    }
+        }
 //    if (songCursor2 != null && songCursor2.moveToFirst()){
 //        int duration = songCursor2.getColumnIndex(MediaStore.Audio.Media.DURATION);
 //        int title = songCursor2.getColumnIndex(MediaStore.Audio.Media.TITLE);
@@ -187,22 +186,23 @@ public void getMusic(){
     }
 //    songAdapter.notifyDataSetChanged();
 
-    public void imgUpdatePhotoClick(View view){
+    public void imgUpdatePhotoClick(View view) {
         showImageChooser();
     }
-    private void showImageChooser(){
+
+    private void showImageChooser() {
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(i,"Select Profile Image"), CHOOSER_IMAGE);
+        startActivityForResult(Intent.createChooser(i, "Select Profile Image"), CHOOSER_IMAGE);
     }
 
 
     private void uploadImageToFirebaseStorage() {
 
         final StorageReference profileImageRef = FirebaseStorage.getInstance()
-                .getReference("profileimages/"+System.currentTimeMillis() + ".jpg");
-        if (uriProfileImage != null){
+                .getReference("profileimages/" + System.currentTimeMillis() + ".jpg");
+        if (uriProfileImage != null) {
 
             profileImageRef.putFile(uriProfileImage).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                 @Override
@@ -227,7 +227,7 @@ public void getMusic(){
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             Toast.makeText(getApplicationContext(), "Update profile successfully!", Toast.LENGTH_SHORT).show();
                                         }
                                     }
@@ -244,15 +244,15 @@ public void getMusic(){
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case MY_PERMISSON_REQUEST: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (ContextCompat.checkSelfPermission(AllOfflineMusicActivity.this,
-                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Toast.makeText(this, "Permisson granted", Toast.LENGTH_SHORT).show();
                         Anhxa();
                     }
-                }else {
+                } else {
                     Toast.makeText(this, "No permisson granted", Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -272,11 +272,11 @@ public void getMusic(){
                         .into(imgAvatar);
 
             }
-            if (user.getDisplayName() != null){
+            if (user.getDisplayName() != null) {
                 String name = user.getDisplayName().toString();
                 txtDisplayname.setText(name);
             }
-            if (user.getEmail() != null){
+            if (user.getEmail() != null) {
                 String email = user.getEmail().toString();
                 txtEmail.setText(email);
             }
@@ -348,13 +348,13 @@ public void getMusic(){
             // sign out
 
             FirebaseAuth.getInstance().signOut();
-            Intent i = new Intent(getApplicationContext(),LoginActivity.class);
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(i);
             Navigate_AccountActivity.player = MediaPlayer.create(this, R.raw.sofaview);
             Navigate_AccountActivity.player.setLooping(true);
             Navigate_AccountActivity.player.start();
             finish();
-            Toast.makeText(getApplicationContext(),"See you again!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "See you again!", Toast.LENGTH_SHORT).show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -368,12 +368,12 @@ public void getMusic(){
 
     @Override
     public boolean onQueryTextChange(String s) {
-        if (TextUtils.isEmpty(s)){
+        if (TextUtils.isEmpty(s)) {
             songAdapter.getFilter().filter("");
 //            onRestart();
 
 
-        }else {
+        } else {
             songAdapter.getFilter().filter(s.toString());
 
 
@@ -400,11 +400,11 @@ public void getMusic(){
 
     /**
      * Trả lại dữ liệu sau khi nhập giọng nói vào
-     * */
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CHOOSER_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null){
+        if (requestCode == CHOOSER_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             uriProfileImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriProfileImage);

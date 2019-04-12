@@ -29,6 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.example.hanwool.saleapp.PlayerActivity.mp;
+
 public class LoginActivity extends AppCompatActivity {
 EditText edtEmail, edtPassword;
 Button btnLogin;
@@ -45,6 +47,9 @@ CheckBox saveLoginCheckBox;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        if (PlayerActivity.mp != null && PlayerActivity.mp.isPlaying()) {
+            PlayerActivity.mp.stop();
+        }
         Anhxa();
         // animated background
         animationDrawable=(AnimationDrawable) bgLogin.getBackground();

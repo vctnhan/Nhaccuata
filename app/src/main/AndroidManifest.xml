@@ -5,14 +5,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="Hanwool mp3"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PlayerOnlineActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -26,8 +32,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
+            android:fitsSystemWindows="true"
             android:label="Home Page"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".YourProfileActivity"
             android:label="Your profile"
@@ -39,27 +52,28 @@
         <activity
             android:name=".Navigate_AccountActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".AllOfflineMusicActivity"
             android:label="Offline songs"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".PlayerActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".FavouriteMusicActivity"
             android:label="Favourite Songs"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".speech_to_text">
+        <activity android:name=".speech_to_text" />
 
-        </activity>
+        <receiver android:name=".MyReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

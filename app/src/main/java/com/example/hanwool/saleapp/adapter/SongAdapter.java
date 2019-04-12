@@ -121,7 +121,7 @@ public class SongAdapter extends BaseAdapter implements Filterable {
 
         }
         catch(Exception e){
-            viewHoldder.imgAlbumCover.setImageResource(R.drawable.icon_mp3);
+            viewHoldder.imgAlbumCover.setImageResource(R.drawable.logo);
         }
 
 

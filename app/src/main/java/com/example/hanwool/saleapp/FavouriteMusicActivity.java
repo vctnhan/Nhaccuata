@@ -48,6 +48,7 @@ import java.util.Locale;
 
 import static com.example.hanwool.saleapp.AddImageRegisterActivity.CHOOSER_IMAGE;
 import static com.example.hanwool.saleapp.AllOfflineMusicActivity.REQ_CODE_SPEECH_INPUT;
+import static com.example.hanwool.saleapp.PlayerActivity.mp;
 
 public class FavouriteMusicActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SearchView.OnQueryTextListener {
@@ -265,7 +266,7 @@ else {
             finish();
         } else if (id == R.id.signOut) {
             // sign out
-            PlayerActivity.mp.stop();
+
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(getApplicationContext(),LoginActivity.class);
             startActivity(i);

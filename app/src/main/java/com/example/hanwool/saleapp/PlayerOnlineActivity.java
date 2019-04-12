@@ -1,6 +1,5 @@
 package com.example.hanwool.saleapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,8 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -22,35 +19,36 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.hanwool.saleapp.adapter.PlayerFragmentAdapter;
-import com.example.hanwool.saleapp.adapter.ViewPagerPlayerFragmentAdapter;
+import com.example.hanwool.saleapp.adapter.ViewPagerPlayerOnlineFragmentAdapter;
 import com.example.hanwool.saleapp.fragment.Disc_Fragment;
+import com.example.hanwool.saleapp.modal.OnlineSongUrlMp3;
 import com.example.hanwool.saleapp.modal.Song;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class PlayerActivity extends AppCompatActivity {
+import wseemann.media.FFmpegMediaMetadataRetriever;
+
+public class PlayerOnlineActivity extends AppCompatActivity {
     public static MediaPlayer mp;
     Toolbar toolbarPlaynhac;
     ViewPager viewPagerPlaynhac;
-    public static ArrayList<Song> arraySong;
     public static Bitmap songImage;
     private boolean isShuffle = false;
     private boolean isRepeat = false;
-    Disc_Fragment disc_fragment;
+    Disc_FragmentOnline disc_FragmentOnline;
     private double startTime = 0;
     private double finalTime = 0;
     public static int oneTimeOnly = 0;
@@ -62,17 +60,18 @@ public class PlayerActivity extends AppCompatActivity {
     AnimationDrawable animationDrawable;
     LinearLayout bgPlayer;
     TextView tvName, tvTime, tvTiming;
-
-    int position;
     Uri u;
-    public static ViewPagerPlayerFragmentAdapter viewPagerPlayerFragmentAdapter;
+    public static ViewPagerPlayerOnlineFragmentAdapter viewPagerPlayerOnlineFragmentAdapter;
     Thread updateSeekBar;
+    public static ArrayList<OnlineSongUrlMp3> arrayMp3;
+    public static int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         Anhxa();
+
         // animated background
         animationDrawable = (AnimationDrawable) bgPlayer.getBackground();
         animationDrawable.setEnterFadeDuration(0);
@@ -80,8 +79,17 @@ public class PlayerActivity extends AppCompatActivity {
         animationDrawable.start();
     }
 
-
     private void Anhxa() {
+        if (mp != null) {
+            mp.stop();
+        }
+        mp = new MediaPlayer();
+        Intent i = getIntent();
+        //OnlineSongUrlMp3 onlineSongUrlMp3 = (OnlineSongUrlMp3) i.getSerializableExtra("songinfo");
+        Bundle b = i.getExtras();
+        arrayMp3 = new ArrayList<>();
+        arrayMp3 = (ArrayList) b.getParcelableArrayList("songinfo");
+        index = b.getInt("index", 0);
         bgPlayer = findViewById(R.id.bgPlayer);
         fragmentManager = getSupportFragmentManager();
         seekBar = findViewById(R.id.seekBar);
@@ -96,7 +104,6 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
         toolbarPlaynhac.setTitleTextColor(Color.WHITE);
-
         btnShuffle = findViewById(R.id.shuffle);
         btnRepeat = findViewById(R.id.repeat);
         btnBackward = findViewById(R.id.backward);
@@ -105,43 +112,31 @@ public class PlayerActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvTime = findViewById(R.id.tvTime);
         tvTiming = findViewById(R.id.tvTiming);
-        Intent i = getIntent();
-        Bundle b = i.getExtras();
-        arraySong = (ArrayList) b.getParcelableArrayList("arraySong");
-        position = b.getInt("index", 0);
-//        Bundle bundle = new Bundle();
-//        bundle.putString("songImageString", arraySong.get(position).location);
-//set Fragmentclass Arguments
-        disc_fragment = new Disc_Fragment();
-        //disc_fragment.setArguments(bundle);
-        viewPagerPlayerFragmentAdapter = new ViewPagerPlayerFragmentAdapter(getSupportFragmentManager());
-//        viewPagerPlayerFragmentAdapter.AddFragment(disc_fragment);
-        viewPagerPlaynhac.setAdapter(viewPagerPlayerFragmentAdapter);
-        disc_fragment = (Disc_Fragment) viewPagerPlayerFragmentAdapter.getItem(1);
-
-
+        tvName.setText(arrayMp3.get(index).getTitle());
+        mp.reset();
+        playSong(index);
+        seekBar.setMax(mp.getDuration());
         try {
-            MediaMetadataRetriever metaRetriver = new MediaMetadataRetriever();
-            metaRetriver.setDataSource(arraySong.get(position).getLocation());
-            byte[] art = metaRetriver.getEmbeddedPicture();
-            songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
-            disc_fragment.imgDisc.setImageBitmap(songImage);
-            disc_fragment.objectAnimator.start();
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
+            mp.reset();
+            mp.setDataSource(arrayMp3.get(index).getUrlMp3());
+            mp.prepare();
+            tvTime.setText(String.valueOf(mp.getDuration() / (1000 * 60)));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        disc_FragmentOnline = new Disc_FragmentOnline();
+        viewPagerPlayerOnlineFragmentAdapter = new ViewPagerPlayerOnlineFragmentAdapter(getSupportFragmentManager());
+//        viewPagerPlayerOnlineFragmentAdapter.AddFragment(Disc_FragmentOnline);
+        viewPagerPlaynhac.setAdapter(viewPagerPlayerOnlineFragmentAdapter);
+        disc_FragmentOnline = (Disc_FragmentOnline) viewPagerPlayerOnlineFragmentAdapter.getItem(1);
+//                RequestOptions requestOptions = new RequestOptions();
+//        requestOptions.placeholder(R.drawable.logo);
+//        requestOptions.error(R.drawable.errorimg);
+//        Glide.with(getApplicationContext())
+//                .setDefaultRequestOptions(requestOptions)
+//                .load(arrayMp3.get(index).getImage())
+//                .into(Disc_FragmentOnline.imgDisc);
 
-
-//
-        //  Toast.makeText(getApplicationContext(),arraySong.get(position).getName(), Toast.LENGTH_SHORT).show();
-        if (mp != null) {
-            mp.stop();
-        }
-        mp = new MediaPlayer();
-
-        u = Uri.parse(arraySong.get(position).getLocation().toString());
-        mp = MediaPlayer.create(getApplicationContext(), u);
-        playSong(position);
         mp.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -149,16 +144,16 @@ public class PlayerActivity extends AppCompatActivity {
 
                 if (isShuffle) {
                     Random rand = new Random();
-                    position = rand.nextInt((arraySong.size() - 1) - 0 + 1) + 0;
-                    playSong(position);
+                    index = rand.nextInt((arrayMp3.size() - 1) - 0 + 1) + 0;
+                    playSong(index);
                 } else if (isRepeat) {
-                    playSong(position);
+                    playSong(index);
                 } else {
                     mp.reset();
-                    position++;
-                    if (position >= arraySong.size())
-                        position = 0;
-                    playSong(position);
+                    index++;
+                    if (index >= arrayMp3.size())
+                        index = 0;
+                    playSong(index);
                 }
             }
         });
@@ -167,12 +162,12 @@ public class PlayerActivity extends AppCompatActivity {
             public void run() {
 
                 int totalDuration = mp.getDuration();
-                int curentPosition = 0;
-                while (curentPosition < totalDuration) {
+                int curentindex = 0;
+                while (curentindex < totalDuration) {
                     try {
                         sleep(5000);
-                        curentPosition = mp.getCurrentPosition();
-                        seekBar.setProgress(curentPosition);
+                        curentindex = mp.getCurrentPosition();
+                        seekBar.setProgress(curentindex);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -201,7 +196,6 @@ public class PlayerActivity extends AppCompatActivity {
                 mp.seekTo(seekBar.getProgress());
             }
         });
-
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -210,7 +204,7 @@ public class PlayerActivity extends AppCompatActivity {
                     btnPlay.setImageResource(R.drawable.pause);
                     btnPlay.setEnabled(true);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        Disc_Fragment.objectAnimator.pause();
+                        disc_FragmentOnline.objectAnimator.pause();
                     }
                     finalTime = mp.getDuration();
                     startTime = mp.getCurrentPosition();
@@ -222,7 +216,7 @@ public class PlayerActivity extends AppCompatActivity {
 
                 } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        Disc_Fragment.objectAnimator.resume();
+                        disc_FragmentOnline.objectAnimator.resume();
                     }
                     mp.start();
                     btnPlay.setImageResource(R.drawable.play);
@@ -235,34 +229,21 @@ public class PlayerActivity extends AppCompatActivity {
                 btnPlay.setImageResource(R.drawable.pause);
                 if (isShuffle) {
                     Random rand = new Random();
-                    oneTimeOnly = rand.nextInt((arraySong.size() - 1) - 0 + 2) + 0;
+                    oneTimeOnly = rand.nextInt((arrayMp3.size() - 1) - 0 + 2) + 0;
+                    u = Uri.parse(arrayMp3.get(index).toString());
+                    mp = MediaPlayer.create(getApplicationContext(), u);
                     playSong(oneTimeOnly);
                     seekBar.setMax(mp.getDuration());
 
                 } else {
                     mp.stop();
                     mp.release();
-                    position = (position + 1) % arraySong.size();
-                    u = Uri.parse(arraySong.get(position).toString());
+                    index = (index + 1) % arrayMp3.size();
+                    u = Uri.parse(arrayMp3.get(index).toString());
                     mp = MediaPlayer.create(getApplicationContext(), u);
-
-                    playSong(position);
+                    playSong(index);
                     seekBar.setMax(mp.getDuration());
                 }
-
-                try {
-                    MediaMetadataRetriever metaRetriver = new MediaMetadataRetriever();
-                    metaRetriver.setDataSource(arraySong.get(position).getLocation());
-                    byte[] art = metaRetriver.getEmbeddedPicture();
-                    songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
-
-//Toast.makeText(context, uri.toString(), Toast.LENGTH_SHORT).show();
-                    disc_fragment.imgDisc.setImageBitmap(songImage);
-                    disc_fragment.objectAnimator.start();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
         btnBackward.setOnClickListener(new View.OnClickListener() {
@@ -271,26 +252,11 @@ public class PlayerActivity extends AppCompatActivity {
                 btnPlay.setImageResource(R.drawable.pause);
                 mp.stop();
                 mp.release();
-                position = (position - 1 < 0) ? arraySong.size() - 1 : position - 1;
-
-                u = Uri.parse(arraySong.get(position).toString());
+                index = (index - 1 < 0) ? arrayMp3.size() - 1 : index - 1;
+                u = Uri.parse(arrayMp3.get(index).toString());
                 mp = MediaPlayer.create(getApplicationContext(), u);
-                playSong(position);
+                playSong(index);
                 seekBar.setMax(mp.getDuration());
-
-                try {
-                    MediaMetadataRetriever metaRetriver = new MediaMetadataRetriever();
-                    metaRetriver.setDataSource(arraySong.get(position).getLocation());
-                    byte[] art = metaRetriver.getEmbeddedPicture();
-                    songImage = BitmapFactory.decodeByteArray(art, 0, art.length);
-
-//Toast.makeText(context, uri.toString(), Toast.LENGTH_SHORT).show();
-                    disc_fragment.imgDisc.setImageBitmap(songImage);
-                    disc_fragment.objectAnimator.start();
-
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Null", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         btnShuffle.setOnClickListener(new View.OnClickListener() {
@@ -331,7 +297,6 @@ public class PlayerActivity extends AppCompatActivity {
         });
     }
 
-
     public void updateProgressBar() {
         myHandler.postDelayed(UpdateSongTime, 100);
     }
@@ -343,19 +308,13 @@ public class PlayerActivity extends AppCompatActivity {
             if (mp == null) {
                 mp = new MediaPlayer();
             }
-
-
             mp.reset();
-
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-            mp.setDataSource(arraySong.get(songIndex).getLocation().toString());
-
+            mp.setDataSource(arrayMp3.get(songIndex).getUrlMp3());
             mp.prepare();
             mp.start();
-
-
             // Displaying Song title
-            String songTitle = arraySong.get(songIndex).getName();
+            String songTitle = arrayMp3.get(songIndex).getTitle();
             tvName.setText(songTitle);
             tvName.setTextColor(Color.parseColor("#ffffff"));
 
@@ -428,12 +387,4 @@ public class PlayerActivity extends AppCompatActivity {
             myHandler.postDelayed(this, 100);
         }
     };
-
-    private Uri getImageUri(Context context, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
 }
-

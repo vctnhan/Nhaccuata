@@ -85,7 +85,7 @@ public class FavouriteAdapter extends BaseAdapter implements Filterable {
 
         }
         catch(Exception e){
-            viewHoldder.imgAlbumCover.setImageResource(R.drawable.icon_mp3);
+            viewHoldder.imgAlbumCover.setImageResource(R.drawable.logo);
         }
         viewHoldder.txtNamesong.setText(song.getName());
         viewHoldder.txtNamesong.setTypeface(ResourcesCompat.getFont(context, R.font.tabithafull));

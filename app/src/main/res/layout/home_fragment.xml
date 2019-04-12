@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout4"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_homefragment">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+      >
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="#fff"
+            android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/proImgBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/slideAds"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.daimajia.slider.library.SliderLayout
+                android:id="@+id/slideAds"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp">
+
+            </com.daimajia.slider.library.SliderLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+       android:orientation="vertical"
+           >
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Bài hát mới"
+                android:textColor="#00BCD4"
+                android:textSize="25sp"
+             />
+
+            <ProgressBar
+                android:id="@+id/proBar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="visible"
+            />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lstNewSong"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+              />
+
+        </LinearLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtChart"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:text="Bảng xếp hạng"
+                android:textColor="#00BCD4"
+                android:textSize="25sp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/lstChart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ProgressBar
+                android:id="@+id/proBarChart"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/lstChart"
+                app:layout_constraintEnd_toEndOf="@+id/lstChart"
+                app:layout_constraintStart_toStartOf="@+id/lstChart"
+                app:layout_constraintTop_toTopOf="@+id/lstChart"
+                app:layout_constraintVertical_bias="0.457" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lstChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"></android.support.v7.widget.RecyclerView>
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+</ScrollView>
