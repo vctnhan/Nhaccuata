@@ -63,9 +63,9 @@ VideoView videoView;
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 // finally change the color
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), Color.parseColor("#2a2701")));
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            window.setStatusBarColor(ContextCompat.getColor(getApplicationContext(), Color.parseColor("#2a2701")));
+//        }
     }
 
     public void btnGotoRegister(View view) {

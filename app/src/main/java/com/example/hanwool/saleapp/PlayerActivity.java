@@ -137,6 +137,9 @@ public class PlayerActivity extends AppCompatActivity {
         if (mp != null) {
             mp.stop();
         }
+        if (PlayerOnlineActivity.mp !=null){
+            PlayerOnlineActivity.mp.stop();
+        }
         mp = new MediaPlayer();
 
         u = Uri.parse(arraySong.get(position).getLocation().toString());

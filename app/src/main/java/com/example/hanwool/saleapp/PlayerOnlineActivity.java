@@ -80,8 +80,11 @@ public class PlayerOnlineActivity extends AppCompatActivity {
     }
 
     private void Anhxa() {
-        if (mp != null) {
+        if (mp != null ) {
             mp.stop();
+        }
+        if (PlayerActivity.mp != null ) {
+            PlayerActivity.mp.stop();
         }
         mp = new MediaPlayer();
         Intent i = getIntent();
