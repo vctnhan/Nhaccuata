@@ -50,8 +50,8 @@ public class HomeFragment extends Fragment implements
     HashMap<String, Integer> HashMapForLocalRes;
     SliderLayout slideAds;
     View view;
-    public static final String VIETNAM_URL = "https://beta.chiasenhac.vn/mp3/vietnam.html";
-    public static final String BASE_URL = "https://chiasenhac.vn/";
+    public static final String VIETNAM_URL = "https://chiasenhac.vn/mp3/vietnam.html";
+    public static final String BASE_URL = "https://chiasenhac.vn";
     public static final String NEW_SONG_URL= "https://beta.chiasenhac.vn/bai-hat-moi.html";
     public static final String CHART_URL= "https://beta.chiasenhac.vn/nhac-hot.html";
     OnTaskCompleted onTaskCompleted = this;

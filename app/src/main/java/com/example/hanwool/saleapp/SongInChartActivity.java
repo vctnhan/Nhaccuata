@@ -45,7 +45,7 @@ url = getIntent().getStringExtra("url");
         Log.e("Anhxa", "Anhxa: " + url );
         lstSongChart = findViewById(R.id.lstSongChart);
         progressBar = findViewById(R.id.proBar);
-        new DownloadNewSongHtml().execute(HomeFragment.BASE_URL+url);
+        new DownloadNewSongHtml().execute(HomeFragment.BASE_URL+"/"+url);
 
     }
     @Override
