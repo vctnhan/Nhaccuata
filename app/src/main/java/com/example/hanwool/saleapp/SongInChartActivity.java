@@ -1,26 +1,19 @@
-package com.example.hanwool.saleapp.fragment;
+package com.example.hanwool.saleapp;
 
-import android.content.BroadcastReceiver;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
 
-import com.example.hanwool.saleapp.Asyntask.DownloadTaskLosslessHtml;
-import com.example.hanwool.saleapp.R;
-import com.example.hanwool.saleapp.adapter.ChartAdapter;
 import com.example.hanwool.saleapp.adapter.OnlineSongAdapter;
+import com.example.hanwool.saleapp.fragment.HomeFragment;
+import com.example.hanwool.saleapp.fragment.NewSongFragment;
 import com.example.hanwool.saleapp.modal.OnlineSongHtml;
 import com.example.hanwool.saleapp.modal.OnlineSongUrlMp3;
-import com.example.hanwool.saleapp.myInterface.OnTaskCompleted;
 import com.example.hanwool.saleapp.myInterface.OnTaskCompletedNewSong;
 
 import org.jsoup.Jsoup;
@@ -31,43 +24,40 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class NewSongFragment extends Fragment {
-    public static final String VIETNAM_URL = "https://beta.chiasenhac.vn/mp3/vietnam.html";
-    public static final String BASE_URL = "https://beta.chiasenhac.vn";
-    public static final String NEW_SONG_URL = "https://beta.chiasenhac.vn/bai-hat-moi.html";
-    public static final String CHART_URL = "https://beta.chiasenhac.vn/nhac-hot.html";
-    private ArrayList<OnlineSongUrlMp3> arrayMp3;
-    RecyclerView lstNewSong;
-    OnlineSongAdapter onlineSongAdapter;
-    ProgressBar progressBar;
-    View view;
-
-    public NewSongFragment() {
-        // Required empty public constructor
-    }
-
-
+public class SongInChartActivity extends AppCompatActivity {
+RecyclerView lstSongChart;
+ProgressBar progressBar;
+OnlineSongAdapter onlineSongAdapter;
+String url;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.newsong_fragment, container, false);
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_song_in_chart);
         Anhxa();
-        // Inflate the layout for this fragment
-        return view;
     }
 
     private void Anhxa() {
-        progressBar = view.findViewById(R.id.proBar);
-        lstNewSong = view.findViewById(R.id.lstNewSong);
-        new DownloadNewSongHtml().execute(NEW_SONG_URL);
-    }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("");
 
+url = getIntent().getStringExtra("url");
+        Log.e("Anhxa", "Anhxa: " + url );
+        lstSongChart = findViewById(R.id.lstSongChart);
+        progressBar = findViewById(R.id.proBar);
+        new DownloadNewSongHtml().execute(HomeFragment.BASE_URL+url);
+
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+    // New SOng
     class DownloadNewSongHtml extends AsyncTask<String, Void, ArrayList<OnlineSongHtml>> {
 
         private static final String TAG = "DownloadTask";
         String linkMp3, imgMp3, titleMp3, singerMp3, linkHtml;
-        public static final String BASE_URL = "https://beta.chiasenhac.vn";
         ArrayList<OnlineSongHtml> arrayOnline = new ArrayList<>();
         ArrayList<OnlineSongUrlMp3> arrayToLv = new ArrayList<OnlineSongUrlMp3>();
 
@@ -114,13 +104,12 @@ public class NewSongFragment extends Fragment {
         protected void onPostExecute(ArrayList<OnlineSongHtml> onlineSongHtmls) {
             super.onPostExecute(onlineSongHtmls);
             for (int i = 0; i < onlineSongHtmls.size(); i++) {
-                new DownloadNewSongHtml.DownloadMp3Url().execute(onlineSongHtmls.get(i).getUrlMp3Html());
-                //    Log.e("newsong: ", onlineSongHtmls.get(2).getSinger() + " " + onlineSongHtmls.size());
+                new DownloadMp3Url().execute(onlineSongHtmls.get(i).getUrlMp3Html());
+                //Log.e("newsongsinger: ", onlineSongHtmls.get(2).getUrlMp3Html() + " " + onlineSongHtmls.size());
             }
             //   Log.e("newsong", "newsong: " + onlineSongHtmls.get(0).getSinger() + "\n" + onlineSongHtmls.size());
             // tra ve : /mp3/chinese/c-pop/em-bang-long-lam-mot-nguoi-binh-thuong-o-ben-canh-anh~vuong-that-that~tsvrw7czqa9tv1.html
         }
-
 
         class DownloadMp3Url extends AsyncTask<String, Void, ArrayList<OnlineSongUrlMp3>> {
 
@@ -198,6 +187,8 @@ public class NewSongFragment extends Fragment {
             @Override
             protected void onPostExecute(ArrayList<OnlineSongUrlMp3> onlineSongUrlMp3s) {
                 super.onPostExecute(onlineSongUrlMp3s);
+                // onTaskCompletedNewSong.OnTaskCompletedNewSong(onlineSongUrlMp3s);
+                Log.e(TAG, "onPostExecuteMP3: " + onlineSongUrlMp3s.get(0).getTitle() );
                 progressBar.setVisibility(View.GONE);
                 arrayToLv.add(new OnlineSongUrlMp3(
                         onlineSongUrlMp3s.get(0).getUrlMp3(),
@@ -205,12 +196,12 @@ public class NewSongFragment extends Fragment {
                         onlineSongUrlMp3s.get(0).getTitle(),
                         onlineSongUrlMp3s.get(0).getSinger(),
                         onlineSongUrlMp3s.get(0).getViews(),
-                        onlineSongUrlMp3s.get(0).getDownloads()));
-                onlineSongAdapter = new OnlineSongAdapter(getContext(), arrayToLv);
-                lstNewSong.setHasFixedSize(true);
-                lstNewSong.setLayoutManager
-                        (new LinearLayoutManager(getContext()));
-                lstNewSong.setAdapter(onlineSongAdapter);
+                        onlineSongUrlMp3s.get(0).getDownloads() ));
+                onlineSongAdapter = new OnlineSongAdapter(getApplicationContext(),arrayToLv);
+                lstSongChart.setHasFixedSize(true);
+                lstSongChart.setLayoutManager
+                        (new LinearLayoutManager(getApplicationContext()));
+                lstSongChart.setAdapter(onlineSongAdapter);
                 //Setup data recyclerView
 
                 //  onlineSongAdapter =  new OnlineSongAdapter(homeFragment.getContext() ,onlineSongUrlMp3s);

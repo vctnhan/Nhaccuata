@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment implements
     SliderLayout slideAds;
     View view;
     public static final String VIETNAM_URL = "https://beta.chiasenhac.vn/mp3/vietnam.html";
-    public static final String BASE_URL = "https://chiasenhac.vn";
+    public static final String BASE_URL = "https://chiasenhac.vn/";
     public static final String NEW_SONG_URL= "https://beta.chiasenhac.vn/bai-hat-moi.html";
     public static final String CHART_URL= "https://beta.chiasenhac.vn/nhac-hot.html";
     OnTaskCompleted onTaskCompleted = this;
@@ -183,10 +183,11 @@ if (!CheckConnectionManager.getConnectivityStatusString(getContext()).matches("N
     }
 
 // New SOng
-class DownloadNewSongHtml extends AsyncTask<String, Void, ArrayList<OnlineSongHtml>> {
+class DownloadNewSongHtml extends AsyncTask<String, Void, ArrayList<OnlineSongHtml>>  {
 
     private static final String TAG = "DownloadTask";
     String linkMp3, imgMp3, titleMp3, singerMp3, linkHtml;
+    public static final String BASE_URL = "https://beta.chiasenhac.vn";
     ArrayList<OnlineSongHtml> arrayOnline = new ArrayList<>();
     ArrayList<OnlineSongUrlMp3> arrayToLv = new ArrayList<OnlineSongUrlMp3>();
 
@@ -234,11 +235,12 @@ class DownloadNewSongHtml extends AsyncTask<String, Void, ArrayList<OnlineSongHt
         super.onPostExecute(onlineSongHtmls);
         for (int i = 0; i < 6; i++) {
             new DownloadMp3Url().execute(onlineSongHtmls.get(i).getUrlMp3Html());
-        Log.e("newsongsinger: ", onlineSongHtmls.get(2).getUrlMp3Html() + " " + onlineSongHtmls.size());
+        //Log.e("newsongsinger: ", onlineSongHtmls.get(2).getSinger() + " " + onlineSongHtmls.size());
         }
         //   Log.e("newsong", "newsong: " + onlineSongHtmls.get(0).getSinger() + "\n" + onlineSongHtmls.size());
         // tra ve : /mp3/chinese/c-pop/em-bang-long-lam-mot-nguoi-binh-thuong-o-ben-canh-anh~vuong-that-that~tsvrw7czqa9tv1.html
     }
+
 
 
  class DownloadMp3Url extends AsyncTask<String, Void, ArrayList<OnlineSongUrlMp3>> {
@@ -247,9 +249,6 @@ class DownloadNewSongHtml extends AsyncTask<String, Void, ArrayList<OnlineSongHt
         String linkMp3, imgMp3, titleMp3, singerMp3, viewMp3, downloadMp3;
         public OnTaskCompletedNewSong onTaskCompletedNewSong = null;
 
-        public DownloadMp3Url(OnTaskCompletedNewSong onTaskCompletedNewSong) {
-            this.onTaskCompletedNewSong = onTaskCompletedNewSong;
-        }
 
         public DownloadMp3Url() {
         }
@@ -320,8 +319,6 @@ class DownloadNewSongHtml extends AsyncTask<String, Void, ArrayList<OnlineSongHt
         @Override
         protected void onPostExecute(ArrayList<OnlineSongUrlMp3> onlineSongUrlMp3s) {
             super.onPostExecute(onlineSongUrlMp3s);
-           // onTaskCompletedNewSong.OnTaskCompletedNewSong(onlineSongUrlMp3s);
-            Log.e(TAG, "onPostExecuteMP3: " + onlineSongUrlMp3s.get(0).getTitle() );
             progressBar.setVisibility(View.GONE);
             arrayToLv.add(new OnlineSongUrlMp3(
                     onlineSongUrlMp3s.get(0).getUrlMp3(),

@@ -107,6 +107,8 @@ public class PlayerOnlineActivity extends AppCompatActivity {
             }
         });
         toolbarPlaynhac.setTitleTextColor(Color.WHITE);
+        //toolbarPlaynhac.setTitle(arrayMp3.get(index).getTitle());
+
         btnShuffle = findViewById(R.id.shuffle);
         btnRepeat = findViewById(R.id.repeat);
         btnBackward = findViewById(R.id.backward);
@@ -117,16 +119,17 @@ public class PlayerOnlineActivity extends AppCompatActivity {
         tvTiming = findViewById(R.id.tvTiming);
         tvName.setText(arrayMp3.get(index).getTitle());
         mp.reset();
-        playSong(index);
+
         seekBar.setMax(mp.getDuration());
-        try {
-            mp.reset();
-            mp.setDataSource(arrayMp3.get(index).getUrlMp3());
-            mp.prepare();
-            tvTime.setText(String.valueOf(mp.getDuration() / (1000 * 60)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            mp.reset();
+//            mp.setDataSource(arrayMp3.get(index).getUrlMp3());
+//            mp.prepare();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        playSong(index);
         disc_FragmentOnline = new Disc_FragmentOnline();
         viewPagerPlayerOnlineFragmentAdapter = new ViewPagerPlayerOnlineFragmentAdapter(getSupportFragmentManager());
 //        viewPagerPlayerOnlineFragmentAdapter.AddFragment(Disc_FragmentOnline);
@@ -320,14 +323,14 @@ public class PlayerOnlineActivity extends AppCompatActivity {
             String songTitle = arrayMp3.get(songIndex).getTitle();
             tvName.setText(songTitle);
             tvName.setTextColor(Color.parseColor("#ffffff"));
-
+            tvTime.setText(String.valueOf(mp.getDuration() / (1000 * 60)));
             // Changing Button Image to pause image
             btnPlay.setImageResource(R.drawable.play);
 
             // set Progress bar values
             seekBar.setProgress(0);
             seekBar.setMax(mp.getDuration());
-
+            getSupportActionBar().setTitle(arrayMp3.get(index).getTitle());
             // Updating progress bar
             updateProgressBar();
         } catch (IllegalArgumentException e) {

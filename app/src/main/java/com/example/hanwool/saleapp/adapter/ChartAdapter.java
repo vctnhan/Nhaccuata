@@ -1,6 +1,7 @@
 package com.example.hanwool.saleapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.hanwool.saleapp.R;
+import com.example.hanwool.saleapp.SongInChartActivity;
 import com.example.hanwool.saleapp.modal.OnlineSongHtml;
 
 import java.util.ArrayList;
@@ -78,11 +80,10 @@ public class  ItemHolder extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(context, ChitietsanphamActivity.class);
-//                intent.putExtra("thongtinsanpham",arraySanpham.get(getPosition()));
-//
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, SongInChartActivity.class);
+                intent.putExtra("url",arrayChart.get(getPosition()).getUrlMp3Html());
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
     }
