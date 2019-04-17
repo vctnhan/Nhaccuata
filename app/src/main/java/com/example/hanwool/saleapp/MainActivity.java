@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(3);
         FragmentManager manager = getSupportFragmentManager();
         PagerCustomAdapter adapter = new PagerCustomAdapter(manager);
         viewPager.setAdapter(adapter);
@@ -293,6 +294,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             // storage songs
             Intent i = new Intent(this, AllOfflineMusicActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+           // i.setClassName(this,"com.example.hanwool.saleapp.AllOfflineMusicActivity");
             startActivity(i);
             finish();
         } else if (id == R.id.nav_slideshow) {

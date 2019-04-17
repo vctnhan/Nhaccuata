@@ -251,6 +251,8 @@ else {
         if (id == R.id.nav_camera) {
             // Homepage
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+           // i.setClassName(this,"com.example.hanwool.saleapp.MainActivity");
             startActivity(i);
             finish();
         } else if (id == R.id.nav_gallery) {

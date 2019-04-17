@@ -299,6 +299,8 @@ public class YourProfileActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Trang chu
             Intent i = new Intent(this, MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+           // i.setClassName(this,"com.example.hanwool.saleapp.MainActivity");
             startActivity(i);
             finish();
         } else if (id == R.id.nav_gallery) {
